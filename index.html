@@ -1172,6 +1172,9 @@ if (window.innerWidth < 768) {
   if (statsRow) { statsRow.style.gridTemplateColumns = 'repeat(2,1fr)'; }
 }
 
+// ── Apps Script URL để check payment status ──
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBM-ZLDnHa7OGKaoM-nTuNGO732femZS28qphfiHr_6WC0kj4mcy1zia-7QlgZOeAZfg/exec';
+
 // Order form modal
 function showOrderForm() {
   const modal = document.getElementById('order-modal');
@@ -1205,6 +1208,16 @@ function submitOrder(e) {
   const phone = document.getElementById('f-phone').value.trim();
   if (!name || !email || !phone) return;
   localStorage.setItem('lpai_lead', JSON.stringify({ name, email, phone, ts: Date.now() }));
+
+  // Gửi lead lên Apps Script → ghi vào Sheet Leads
+  if (SCRIPT_URL && !SCRIPT_URL.includes('PASTE_')) {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ type: 'lead', name, email, phone })
+    }).catch(() => {});
+  }
+
   document.getElementById('order-form-step').style.display = 'none';
   document.getElementById('order-pay-step').style.display  = 'block';
   setActiveTab(2);
@@ -1236,8 +1249,8 @@ function proceedToPayment() {
   localStorage.setItem('lpai_bump',  hasBump ? '1' : '0');
   localStorage.setItem('lpai_order', orderCode);
 
-  // Tạo URL QR thật từ SePay (TPBank)
-  const qrUrl = `https://qr.sepay.vn/img?bank=TPB&acc=00005244297&template=compact&amount=${amountNum}&des=${orderCode}`;
+  // Tạo URL QR VietQR (đáng tin cậy hơn SePay img)
+  const qrUrl = `https://img.vietqr.io/image/TPB-00005244297-compact.png?amount=${amountNum}&addInfo=${orderCode}&accountName=NGUYEN%20VAN%20DIEN`;
   document.getElementById('qr-img').src = qrUrl;
 
   // Cập nhật bảng bank details động
@@ -1261,7 +1274,41 @@ function proceedToPayment() {
   document.getElementById('qr-total').textContent = amountStr;
   document.getElementById('qr-total').style.color = hasBump ? '#fbbf24' : '#3b82f6';
   if (hasBump) document.getElementById('qr-label').textContent = 'Ebook + 5 Templates:';
+
+  // Bắt đầu polling tự động check payment
+  startPaymentPolling(orderCode);
 }
+// ── Auto-redirect sau khi thanh toán ──
+let _pollTimer = null;
+function startPaymentPolling(orderCode) {
+  if (_pollTimer) clearInterval(_pollTimer);
+  let attempts = 0;
+  const maxAttempts = 120; // poll tối đa 10 phút (120 x 5s)
+
+  _pollTimer = setInterval(async () => {
+    attempts++;
+    if (attempts > maxAttempts) {
+      clearInterval(_pollTimer);
+      return;
+    }
+    try {
+      if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_')) return;
+      const res  = await fetch(`${SCRIPT_URL}?order=${orderCode}`);
+      const data = await res.json();
+      if (data.paid) {
+        clearInterval(_pollTimer);
+        // Hiện thông báo thành công trước khi redirect
+        const statusEl = document.getElementById('payment-status');
+        if (statusEl) {
+          statusEl.innerHTML = '🎉 Thanh toán thành công! Đang chuyển hướng...';
+          statusEl.style.color = '#10b981';
+        }
+        setTimeout(() => { window.location.href = 'thank-you.html'; }, 1500);
+      }
+    } catch(e) {}
+  }, 5000); // check mỗi 5 giây
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Render modal bank details (modal HTML is after this script tag)
   document.getElementById('modal-bank').innerHTML = bankDetails.map(([k,v,vc]) => `
@@ -1456,11 +1503,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <p style="font-size:0.78rem;color:#64748b;line-height:1.7;">Sau khi chuyển khoản thành công, ebook và toàn bộ bonus sẽ được gửi tự động đến email của bạn.</p>
       </div>
 
-      <!-- Confirm button → redirect to thank-you page -->
-      <button onclick="window.location.href='thank-you.html'" class="btn-primary" style="width:100%;padding:16px;font-size:1rem;font-weight:700;border:none;cursor:pointer;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#10b981,#059669);">
-        ✅ Tôi Đã Chuyển Khoản Xong →
-      </button>
-      <p style="font-size:0.72rem;color:#475569;text-align:center;margin-top:10px;">Bấm để xem hướng dẫn nhận ebook và bonus của bạn</p>
+      <!-- Auto-redirect status -->
+      <div style="background:#0a1628;border:1px solid #1a3055;border-radius:10px;padding:14px 16px;text-align:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="animation:spin 1.2s linear infinite;flex-shrink:0;">
+            <circle cx="12" cy="12" r="10" stroke="#1a3055" stroke-width="3"/>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <p id="payment-status" style="font-size:0.82rem;color:#94a3b8;font-weight:600;">Đang chờ xác nhận thanh toán...</p>
+        </div>
+        <p style="font-size:0.72rem;color:#475569;">Hệ thống tự động nhận diện · Không cần bấm gì thêm</p>
+      </div>
+      <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
     </div>
 
   </div>

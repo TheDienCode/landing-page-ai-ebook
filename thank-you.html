@@ -1,275 +1,99 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thanh Toán Thành Công — PercentXLaunch</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cảm ơn bạn! — Landing Page AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
     body {
-      background-color: #030d1e;
+      background: #030d1e;
       color: #f0f4ff;
       font-family: 'Be Vietnam Pro', sans-serif;
       min-height: 100vh;
-      background-image:
-        linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
-    .grad-blue {
-      background: linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #06b6d4 100%);
+    .card {
+      background: linear-gradient(135deg, #0a1628, #0c1b38);
+      border: 1px solid #2563eb;
+      border-radius: 20px;
+      max-width: 520px;
+      width: 100%;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: 0 0 80px rgba(37,99,235,0.25);
+    }
+    .emoji { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+    h1 { font-size: 1.9rem; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
+    .grad {
+      background: linear-gradient(135deg, #60a5fa, #2563eb, #06b6d4);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .glow-text { text-shadow: 0 0 40px rgba(59,130,246,0.5); }
-    .card {
-      background: linear-gradient(135deg, #0a1628, #0c1b33);
-      border: 1px solid #1a3055; border-radius: 16px;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff; font-weight: 700; border-radius: 10px;
-      border: 1px solid rgba(96,165,250,0.3);
-      box-shadow: 0 4px 24px rgba(37,99,235,0.4);
-      transition: all 0.2s; cursor: pointer;
-      font-family: 'Be Vietnam Pro', sans-serif;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 6px 32px rgba(37,99,235,0.6);
-      transform: translateY(-1px);
-    }
-    .check-icon {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; color: #10b981; font-size: 0.7rem; font-weight: 900;
-    }
-    .step-num {
-      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
-      background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.35);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; font-weight: 900; color: #60a5fa;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      70% { transform: scale(1.1); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .pop-in   { animation: popIn  0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-    .fade-up  { animation: fadeUp 0.6s ease forwards; }
-    .delay-1  { animation-delay: 0.2s; opacity: 0; }
-    .delay-2  { animation-delay: 0.4s; opacity: 0; }
-    .delay-3  { animation-delay: 0.6s; opacity: 0; }
-    .delay-4  { animation-delay: 0.8s; opacity: 0; }
+    .sub { font-size: 1rem; color: #94a3b8; margin-bottom: 32px; line-height: 1.7; }
+    .steps { text-align: left; background: #050f24; border: 1px solid #1a3055; border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
+    .step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+    .step:last-child { margin-bottom: 0; }
+    .step-num { background: #2563eb; color: #fff; font-weight: 800; font-size: 0.75rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-text { font-size: 0.9rem; color: #94a3b8; line-height: 1.6; }
+    .step-text strong { color: #f0f4ff; }
+    .zalo-box { background: rgba(37,99,235,0.08); border: 1px solid #1d4ed8; border-radius: 12px; padding: 16px 20px; margin-bottom: 28px; }
+    .zalo-box p { font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px; }
+    .zalo-box a { color: #60a5fa; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .btn { display: inline-block; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 14px 32px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 24px rgba(37,99,235,0.4); }
   </style>
 </head>
 <body>
+<div class="card">
+  <span class="emoji">🎉</span>
+  <h1>Thanh toán<br/><span class="grad">thành công!</span></h1>
 
-<!-- NAVBAR -->
-<nav style="position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(3,13,30,0.88);border-bottom:1px solid #1a3055;">
-  <div style="max-width:900px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="#2563eb" stroke-width="1.5" fill="rgba(37,99,235,0.1)"/>
-        <polygon points="14,6 22,10 22,18 14,22 6,18 6,10" stroke="#06b6d4" stroke-width="1" fill="rgba(6,182,212,0.08)"/>
-        <circle cx="14" cy="14" r="3" fill="#2563eb"/>
-      </svg>
-      <span style="font-weight:800;font-size:1rem;color:#f0f4ff;letter-spacing:-0.02em;">PercentX<span style="color:#3b82f6;">Launch</span></span>
-    </div>
-    <span style="font-size:0.78rem;color:#475569;">Đơn hàng đã được xác nhận ✓</span>
-  </div>
-</nav>
+  <div id="greeting"></div>
 
-<!-- HERO SUCCESS -->
-<section style="padding:64px 20px 48px;text-align:center;">
-  <div style="max-width:680px;margin:0 auto;">
+  <p class="sub">
+    Ebook đã được gửi tới email của bạn.<br/>
+    Kiểm tra hộp thư — kể cả thư mục <strong style="color:#fbbf24;">Spam / Quảng cáo</strong> nhé!
+  </p>
 
-    <!-- Checkmark animation -->
-    <div class="pop-in" style="width:88px;height:88px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid rgba(16,185,129,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;box-shadow:0 0 60px rgba(16,185,129,0.2);">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-        <path d="M8 20L16 28L32 12" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-
-    <div class="fade-up delay-1">
-      <p style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#10b981;margin-bottom:12px;">Thanh toán thành công</p>
-      <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.2;letter-spacing:-0.02em;margin-bottom:16px;">
-        Chào mừng bạn đến với<br/>
-        <span class="grad-blue glow-text">hành trình tự làm LP bằng AI</span>
-      </h1>
-      <p style="font-size:1rem;color:#94a3b8;line-height:1.8;max-width:520px;margin:0 auto 32px;">
-        Ebook và toàn bộ tài liệu đang được gửi đến email của bạn. Kiểm tra hộp thư (kể cả <strong style="color:#f0f4ff;">Spam / Promotions</strong>) trong vài phút tới.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ORDER CONFIRMATION -->
-<section style="padding:0 20px 48px;">
-  <div style="max-width:640px;margin:0 auto;" class="fade-up delay-2">
-
-    <div class="card" style="padding:28px;">
-      <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#475569;margin-bottom:20px;">✅ Xác nhận đơn hàng</p>
-
-      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;" id="order-summary">
-        <!-- Rendered by JS from localStorage -->
-      </div>
-
-      <!-- Total -->
-      <div style="border-top:1px solid #1a3055;padding-top:16px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:0.9rem;font-weight:700;color:#94a3b8;">Tổng đã thanh toán:</span>
-        <span id="total-display" style="font-size:1.3rem;font-weight:900;color:#3b82f6;">99.000đ</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Mở email</strong> — Tìm thư từ Google Drive có đính kèm <em>Ebook Landing Page AI</em>
       </div>
     </div>
-
-  </div>
-</section>
-
-<!-- NEXT STEPS -->
-<section style="padding:0 20px 48px;">
-  <div style="max-width:640px;margin:0 auto;" class="fade-up delay-3">
-
-    <div style="text-align:center;margin-bottom:28px;">
-      <h2 style="font-size:1.4rem;font-weight:900;color:#f0f4ff;margin-bottom:8px;">Bạn cần làm gì ngay bây giờ?</h2>
-      <p style="font-size:0.88rem;color:#64748b;">3 bước để bắt đầu hành trình tạo LP đầu tiên</p>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Bấm "Mở"</strong> trong email để xem ebook ngay trên Google Drive
+      </div>
     </div>
-
-    <div style="display:flex;flex-direction:column;gap:14px;">
-
-      <div class="card" style="padding:20px 24px;">
-        <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div class="step-num">1</div>
-          <div>
-            <p style="font-size:0.92rem;font-weight:800;color:#f0f4ff;margin-bottom:4px;">📧 Kiểm tra email ngay</p>
-            <p style="font-size:0.82rem;color:#64748b;line-height:1.7;">Ebook và toàn bộ bonus đang trên đường đến. Kiểm tra cả <strong style="color:#94a3b8;">Spam / Promotions</strong> nếu không thấy sau 5 phút.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px 24px;border-color:rgba(37,99,235,0.35);background:linear-gradient(135deg,#0c1b38,#0f2250);">
-        <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div class="step-num">2</div>
-          <div>
-            <p style="font-size:0.92rem;font-weight:800;color:#f0f4ff;margin-bottom:4px;">📘 Bắt đầu với Giai Đoạn 1</p>
-            <p style="font-size:0.82rem;color:#64748b;line-height:1.7;">Đừng đọc hết một lần. Hãy mở <strong style="color:#94a3b8;">Giai đoạn 1 — Nền Tảng LP</strong>, làm đúng bài tập trước, rồi mới qua bước tiếp theo.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px 24px;">
-        <div style="display:flex;gap:16px;align-items:flex-start;">
-          <div class="step-num">3</div>
-          <div>
-            <p style="font-size:0.92rem;font-weight:800;color:#f0f4ff;margin-bottom:4px;">🤖 Copy prompt → Paste vào AI → Chạy ngay</p>
-            <p style="font-size:0.82rem;color:#64748b;line-height:1.7;">Chọn <strong style="color:#94a3b8;">1 sản phẩm thực tế của bạn</strong>, lấy prompt từ ebook, paste vào Claude hoặc ChatGPT. LP đầu tiên của bạn đang chờ được tạo ra.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- TIPS -->
-<section style="padding:0 20px 48px;">
-  <div style="max-width:640px;margin:0 auto;" class="fade-up delay-4">
-
-    <div class="card" style="padding:28px;">
-      <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#3b82f6;margin-bottom:20px;">💡 Để nhận giá trị tối đa từ ebook</p>
-
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div class="check-icon">✓</div>
-          <p style="font-size:0.85rem;color:#94a3b8;line-height:1.7;"><strong style="color:#f0f4ff;">Làm bài tập, đừng chỉ đọc.</strong> Người hành động sẽ có LP — người chỉ đọc sẽ đọc thêm ebook nữa.</p>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div class="check-icon">✓</div>
-          <p style="font-size:0.85rem;color:#94a3b8;line-height:1.7;"><strong style="color:#f0f4ff;">Đi từng bước, không nhảy cóc.</strong> Giai đoạn 1 là nền tảng — bỏ qua thì prompt ở giai đoạn sau sẽ cho kết quả chung chung.</p>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div class="check-icon">✓</div>
-          <p style="font-size:0.85rem;color:#94a3b8;line-height:1.7;"><strong style="color:#f0f4ff;">30 phút/ngày là đủ.</strong> Trong 5–7 ngày bạn sẽ có LP hoàn chỉnh — không cần ngồi hàng giờ liền.</p>
-        </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div class="check-icon">✓</div>
-          <p style="font-size:0.85rem;color:#94a3b8;line-height:1.7;"><strong style="color:#f0f4ff;">Dùng checklist trước khi deploy.</strong> Checklist 20 điểm trong ebook sẽ bắt được những lỗi mà mắt thường dễ bỏ qua.</p>
-        </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Tải về máy</strong> — Bấm biểu tượng tải xuống góc trên phải để lưu PDF
       </div>
     </div>
   </div>
-</section>
 
-<!-- SUPPORT -->
-<section style="padding:0 20px 80px;">
-  <div style="max-width:640px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
-      <div class="card" style="padding:20px;">
-        <p style="font-size:1.4rem;margin-bottom:8px;">📧</p>
-        <p style="font-size:0.85rem;font-weight:700;color:#f0f4ff;margin-bottom:4px;">Không nhận được email?</p>
-        <p style="font-size:0.78rem;color:#64748b;line-height:1.6;margin-bottom:12px;">Kiểm tra Spam / Promotions. Vẫn không thấy sau 15 phút?</p>
-        <a href="mailto:copywriter.diennguyen@gmail.com" style="font-size:0.78rem;color:#60a5fa;text-decoration:none;font-weight:600;">Gửi email hỗ trợ →</a>
-      </div>
-
-      <div class="card" style="padding:20px;">
-        <p style="font-size:1.4rem;margin-bottom:8px;">💬</p>
-        <p style="font-size:0.85rem;font-weight:700;color:#f0f4ff;margin-bottom:4px;">Hỗ trợ qua Zalo</p>
-        <p style="font-size:0.78rem;color:#64748b;line-height:1.6;margin-bottom:12px;">Phản hồi trong vài phút. Hỏi bất cứ điều gì về ebook.</p>
-        <a href="https://zalo.me/0362269393" target="_blank" style="font-size:0.78rem;color:#60a5fa;text-decoration:none;font-weight:600;">Nhắn Zalo ngay →</a>
-      </div>
-
-    </div>
-
-    <!-- Closing message -->
-    <div style="text-align:center;margin-top:48px;padding:0 20px;">
-      <p style="font-size:1rem;color:#64748b;line-height:1.9;font-style:italic;">
-        "Hành trình vạn dặm bắt đầu bằng một bước chân.<br/>
-        Bước chân đầu tiên — bạn đã đặt xong rồi."
-      </p>
-      <p style="font-size:0.75rem;color:#475569;margin-top:24px;">
-        © 2026 PercentXLaunch · <a href="mailto:copywriter.diennguyen@gmail.com" style="color:#475569;">copywriter.diennguyen@gmail.com</a>
-      </p>
-    </div>
+  <div class="zalo-box">
+    <p>Chưa nhận được email sau 5 phút? Liên hệ hỗ trợ ngay:</p>
+    <a href="https://zalo.me/0396931005">Zalo: 0396931005 →</a>
   </div>
-</section>
+
+  <a href="index.html" class="btn">← Quay lại trang chủ</a>
+</div>
 
 <script>
-// Đọc thông tin đơn hàng từ localStorage (được lưu lúc checkout)
-const lead  = JSON.parse(localStorage.getItem('lpai_lead') || '{}');
-const hasBump = localStorage.getItem('lpai_bump') === '1';
-
-// Render order summary
-const items = [
-  { icon:'📘', name:'Ebook: Thiết Kế Landing Page Bằng AI', sub:'22 trang · 18 Prompts · SePay + Zalo OA guide', price:'99.000đ', color:'#60a5fa' },
-];
-if (hasBump) {
-  items.push({ icon:'💻', name:'Bộ 5 LP HTML Templates', sub:'Vercel-ready · SePay + Zalo OA tích hợp sẵn', price:'149.000đ', color:'#fbbf24' });
-}
-
-document.getElementById('order-summary').innerHTML = items.map(item => `
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span style="font-size:1.2rem;">${item.icon}</span>
-    <div style="flex:1;">
-      <p style="font-size:0.85rem;font-weight:700;color:#f0f4ff;">${item.name}</p>
-      <p style="font-size:0.72rem;color:#475569;">${item.sub}</p>
-    </div>
-    <span style="font-size:0.9rem;font-weight:700;color:${item.color};white-space:nowrap;">${item.price}</span>
-  </div>
-`).join('');
-
-const total = hasBump ? '248.000đ' : '99.000đ';
-document.getElementById('total-display').textContent = total;
-if (hasBump) document.getElementById('total-display').style.color = '#fbbf24';
+  const lead = JSON.parse(localStorage.getItem('lpai_lead') || '{}');
+  if (lead.name) {
+    document.getElementById('greeting').innerHTML =
+      `<p style="font-size:1rem;color:#10b981;font-weight:700;margin-bottom:16px;">Xin chào <strong style="color:#60a5fa;">${lead.name}</strong>! 👋</p>`;
+  }
 </script>
-
 </body>
 </html>

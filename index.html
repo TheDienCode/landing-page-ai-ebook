@@ -1068,9 +1068,9 @@ document.getElementById('order-list').innerHTML = [
 
 // Bank details — rendered after DOM ready (modal is below this script tag)
 const bankDetails = [
-  ['Ngân hàng:',     'Vietcombank'],
-  ['Số tài khoản:',  '1234 5678 90'],
-  ['Chủ tài khoản:', 'NGUYEN VAN SAN'],
+  ['Ngân hàng:',     'TPBank'],
+  ['Số tài khoản:',  '00005244297'],
+  ['Chủ tài khoản:', 'NGUYEN VAN DIEN'],
   ['Số tiền:',       '99.000đ', '#3b82f6'],
   ['Nội dung CK:',   'LPAI [SĐT của bạn]'],
 ];
@@ -1225,19 +1225,42 @@ function toggleBump(checkbox) {
 }
 
 function proceedToPayment() {
-  const hasBump = document.getElementById('bump-check').checked;
-  // Save bump selection so thank-you page can personalise the order summary
-  localStorage.setItem('lpai_bump', hasBump ? '1' : '0');
-  document.getElementById('order-pay-step').style.display  = 'none';
-  document.getElementById('order-qr-step').style.display   = 'block';
+  const hasBump  = document.getElementById('bump-check').checked;
+  const lead     = JSON.parse(localStorage.getItem('lpai_lead') || '{}');
+  const phone    = (lead.phone || '').replace(/\D/g, ''); // bỏ ký tự thừa
+  const amountNum = hasBump ? 248000 : 99000;
+  const amountStr = hasBump ? '248.000đ' : '99.000đ';
+
+  // Tạo mã đơn hàng: LPAI + số điện thoại → duy nhất mỗi khách
+  const orderCode = 'LPAI' + (phone || Date.now().toString().slice(-8));
+  localStorage.setItem('lpai_bump',  hasBump ? '1' : '0');
+  localStorage.setItem('lpai_order', orderCode);
+
+  // Tạo URL QR thật từ SePay (TPBank)
+  const qrUrl = `https://qr.sepay.vn/img?bank=TPB&acc=00005244297&template=compact&amount=${amountNum}&des=${orderCode}`;
+  document.getElementById('qr-img').src = qrUrl;
+
+  // Cập nhật bảng bank details động
+  document.getElementById('modal-bank').innerHTML = [
+    ['Ngân hàng:',     'TPBank',          ''],
+    ['Số tài khoản:',  '00005244297',     ''],
+    ['Chủ tài khoản:', 'NGUYEN VAN DIEN', ''],
+    ['Số tiền:',       amountStr,         '#3b82f6'],
+    ['Nội dung CK:',   orderCode,         '#fbbf24'],
+  ].map(([k,v,vc]) => `
+    <div style="color:#475569;font-size:0.78rem;padding:3px 0;">${k}</div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="color:${vc||'#f0f4ff'};font-weight:${vc?'900':'600'};font-size:${vc?'0.95rem':'0.82rem'};font-family:${vc?'monospace':'inherit'};">${v}</span>
+      ${vc ? `<button onclick="navigator.clipboard.writeText('${v}');this.textContent='✓';setTimeout(()=>this.textContent='📋',1500)" style="background:transparent;border:1px solid #1a3055;border-radius:4px;color:#475569;font-size:0.65rem;padding:1px 5px;cursor:pointer;">📋</button>` : ''}
+    </div>
+  `).join('');
+
+  document.getElementById('order-pay-step').style.display = 'none';
+  document.getElementById('order-qr-step').style.display  = 'block';
   setActiveTab(3);
-  // Sync total to step 3
-  const amount = hasBump ? '248.000đ' : '99.000đ';
-  document.getElementById('qr-total').textContent = amount;
+  document.getElementById('qr-total').textContent = amountStr;
   document.getElementById('qr-total').style.color = hasBump ? '#fbbf24' : '#3b82f6';
-  if (hasBump) {
-    document.getElementById('qr-label').textContent = 'Ebook + 5 Templates:';
-  }
+  if (hasBump) document.getElementById('qr-label').textContent = 'Ebook + 5 Templates:';
 }
 document.addEventListener('DOMContentLoaded', () => {
   // Render modal bank details (modal HTML is after this script tag)
@@ -1412,20 +1435,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <!-- QR + Bank -->
       <div class="qr-row" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;">
-        <div style="background:#fff;width:120px;height:120px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;padding:8px;flex-shrink:0;">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-            <rect x="8" y="8" width="26" height="26" rx="3" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <rect x="14" y="14" width="14" height="14" rx="1" fill="#2563eb"/>
-            <rect x="46" y="8" width="26" height="26" rx="3" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <rect x="52" y="14" width="14" height="14" rx="1" fill="#2563eb"/>
-            <rect x="8" y="46" width="26" height="26" rx="3" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <rect x="14" y="52" width="14" height="14" rx="1" fill="#2563eb"/>
-            <rect x="46" y="46" width="8" height="8" rx="1" fill="#2563eb"/>
-            <rect x="58" y="46" width="8" height="8" rx="1" fill="#2563eb"/>
-            <rect x="46" y="58" width="8" height="8" rx="1" fill="#2563eb"/>
-            <rect x="58" y="58" width="8" height="8" rx="1" fill="#2563eb"/>
-          </svg>
-          <p style="font-size:0.5rem;color:#64748b;text-align:center;line-height:1.3;">VietQR · SePay</p>
+        <div style="background:#fff;width:140px;height:150px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;flex-shrink:0;">
+          <img id="qr-img" src="" alt="QR SePay" width="115" height="115" style="border-radius:4px;" onerror="this.style.display='none';document.getElementById('qr-fallback').style.display='block'"/>
+          <div id="qr-fallback" style="display:none;font-size:0.6rem;color:#ef4444;text-align:center;">Không load được QR</div>
+          <p style="font-size:0.5rem;color:#64748b;text-align:center;line-height:1.3;">SePay · TPBank</p>
         </div>
         <div style="flex:1;background:#050f24;border:1px solid #1a3055;border-radius:10px;padding:12px;">
           <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:0.8rem;" id="modal-bank"></div>

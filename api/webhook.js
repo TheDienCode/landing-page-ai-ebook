@@ -2,7 +2,7 @@
 // SePay cannot follow 302 redirects from Google Apps Script
 // This endpoint receives POST directly (no redirect) then forwards to Apps Script
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4i7mPwC2QBdNDA_5gEwkY2-4wJbCMy-1x1PguNGfMUYTkva_mIkdtaUrCq-FYhshNaQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdCKq5A4hxCWa41dD0e0zJ3KC9v-b16sogGH02dBXPWos91z-56VV5PwJf4BCYIXNNFQ/exec';
 
 export default async function handler(req, res) {
   // Allow CORS

@@ -1250,13 +1250,6 @@ function proceedToPayment() {
   localStorage.setItem('lpai_bump',  hasBump ? '1' : '0');
   localStorage.setItem('lpai_order', orderCode);
 
-  // Generate QR client-side — không cần API ngoài
-  const qrData = buildVietQR(amountNum, orderCode);
-  QRCode.toCanvas(document.getElementById('qr-canvas'), qrData, {
-    width: 115, margin: 1,
-    color: { dark: '#000000', light: '#ffffff' }
-  });
-
   // Cập nhật bảng bank details động
   document.getElementById('modal-bank').innerHTML = [
     ['Ngân hàng:',     'TPBank',          ''],
@@ -1272,12 +1265,26 @@ function proceedToPayment() {
     </div>
   `).join('');
 
+  // Show QR step trước
   document.getElementById('order-pay-step').style.display = 'none';
   document.getElementById('order-qr-step').style.display  = 'block';
   setActiveTab(3);
   document.getElementById('qr-total').textContent = amountStr;
   document.getElementById('qr-total').style.color = hasBump ? '#fbbf24' : '#3b82f6';
   if (hasBump) document.getElementById('qr-label').textContent = 'Ebook + 5 Templates:';
+
+  // Generate QR sau khi DOM đã visible (tránh lỗi canvas chưa ready)
+  setTimeout(() => {
+    try {
+      const qrData = buildVietQR(amountNum, orderCode);
+      QRCode.toCanvas(document.getElementById('qr-canvas'), qrData, {
+        width: 115, margin: 1,
+        color: { dark: '#000000', light: '#ffffff' }
+      });
+    } catch(err) {
+      console.error('QR error:', err);
+    }
+  }, 50);
 
   // Bắt đầu polling tự động check payment
   startPaymentPolling(orderCode);

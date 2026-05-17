@@ -1350,11 +1350,14 @@ function startPaymentPolling(orderCode) {
     }
     try {
       if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_')) return;
-      const res  = await fetch(`${SCRIPT_URL}?order=${orderCode}`);
-      const data = await res.json();
+      console.log(`[Poll #${attempts}] Checking: ${orderCode}`);
+      const res  = await fetch(`${SCRIPT_URL}?order=${orderCode}`, { redirect: 'follow' });
+      const text = await res.text();
+      console.log(`[Poll #${attempts}] Response:`, text);
+      let data = {};
+      try { data = JSON.parse(text); } catch(pe) { console.log('Parse error:', pe); }
       if (data.paid) {
         clearInterval(_pollTimer);
-        // Hiện thông báo thành công trước khi redirect
         const statusEl = document.getElementById('payment-status');
         if (statusEl) {
           statusEl.innerHTML = '🎉 Thanh toán thành công! Đang chuyển hướng...';
@@ -1362,7 +1365,7 @@ function startPaymentPolling(orderCode) {
         }
         setTimeout(() => { window.location.href = 'thank-you.html'; }, 1500);
       }
-    } catch(e) {}
+    } catch(e) { console.log('[Poll error]', e.message); }
   }, 5000); // check mỗi 5 giây
 }
 

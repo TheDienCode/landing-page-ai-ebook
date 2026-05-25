@@ -195,6 +195,25 @@
       border: 1px solid transparent;
     }
 
+    /* ─── SHOWCASE ─── */
+    .showcase-img {
+      width: 100%;
+      display: block;
+      transform: translateY(0);
+      transition: transform 0.6s ease;
+    }
+    .showcase-card:hover .showcase-img {
+      transform: translateY(calc(-100% + 380px));
+      transition: transform 6s linear;
+    }
+    .showcase-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .showcase-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(37,99,235,0.25);
+    }
+
     /* ══════════════════════════════════════════
        MOBILE — max 640px
     ══════════════════════════════════════════ */
@@ -202,6 +221,11 @@
 
       /* ─ Tất cả section: bớt padding dọc và ngang ─ */
       section { padding-top: 56px !important; padding-bottom: 56px !important; padding-left: 16px !important; padding-right: 16px !important; }
+
+      /* ─ Showcase: 1 cột trên mobile ─ */
+      .showcase-grid { grid-template-columns: 1fr !important; }
+      .showcase-card:hover .showcase-img { transform: translateY(calc(-100% + 280px)); }
+      .showcase-viewport { height: 280px !important; }
 
       /* ─ Navbar ─ */
       nav > div { padding: 10px 16px !important; }
@@ -411,6 +435,94 @@
 </section>
 
 <div class="stripe"></div>
+
+<!-- ══════════════════════════════════════════════
+     SHOWCASE — HỌC VIÊN ĐÃ LÀM ĐƯỢC
+══════════════════════════════════════════════ -->
+<section style="padding:72px 20px 80px;" class="reveal">
+  <div style="max-width:1100px;margin:0 auto;">
+
+    <!-- Heading -->
+    <div style="text-align:center;margin-bottom:48px;">
+      <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#3b82f6;margin-bottom:10px;">· KẾT QUẢ THỰC TẾ TỪ CỘNG ĐỒNG ·</p>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.3rem);font-weight:900;color:#f0f4ff;line-height:1.2;margin-bottom:14px;">
+        Học Viên Đã Tự Làm Được
+      </h2>
+      <p style="font-size:0.95rem;color:#64748b;max-width:500px;margin:0 auto;line-height:1.7;">
+        Không code, không design — chỉ ebook + AI. Đây là landing page thật từ cộng đồng.
+        <br/><span style="color:#475569;font-size:0.82rem;">👆 Di chuột vào ảnh để xem toàn bộ trang</span>
+      </p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="showcase-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+
+      <!-- Card 1: Thúy An -->
+      <div class="showcase-card" style="background:linear-gradient(135deg,#0a1628,#0c1b33);border:1px solid #1a3055;border-radius:14px;overflow:hidden;cursor:pointer;">
+        <!-- Browser bar -->
+        <div style="background:#0f1e38;border-bottom:1px solid #1a3055;padding:9px 14px;display:flex;align-items:center;gap:6px;">
+          <span style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#fbbf24;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;flex-shrink:0;"></span>
+          <div style="flex:1;background:#1a3055;border-radius:4px;height:14px;margin-left:8px;"></div>
+        </div>
+        <!-- Viewport -->
+        <div class="showcase-viewport" style="height:380px;overflow:hidden;">
+          <img class="showcase-img" src="Ảnh Showcase học viên/Thúy An - Đói Tiếng Trung.jpeg" alt="Landing page của Thúy An — Đói Tiếng Trung" loading="lazy" />
+        </div>
+        <!-- Info -->
+        <div style="padding:14px 18px 18px;border-top:1px solid #1a3055;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+            <p style="font-weight:800;font-size:0.9rem;color:#f0f4ff;">Thúy An</p>
+            <span style="font-size:0.65rem;font-weight:700;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#60a5fa;padding:2px 9px;border-radius:20px;">member</span>
+          </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Khóa học tiếng Trung cho người mất gốc — <em style="color:#475569;">Đói Tiếng Trung</em></p>
+        </div>
+      </div>
+
+      <!-- Card 2: Nguyễn Quân -->
+      <div class="showcase-card" style="background:linear-gradient(135deg,#0a1628,#0c1b33);border:1px solid #1a3055;border-radius:14px;overflow:hidden;cursor:pointer;">
+        <div style="background:#0f1e38;border-bottom:1px solid #1a3055;padding:9px 14px;display:flex;align-items:center;gap:6px;">
+          <span style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#fbbf24;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;flex-shrink:0;"></span>
+          <div style="flex:1;background:#1a3055;border-radius:4px;height:14px;margin-left:8px;"></div>
+        </div>
+        <div class="showcase-viewport" style="height:380px;overflow:hidden;">
+          <img class="showcase-img" src="Ảnh Showcase học viên/Nguyễn Quân - English Mastery.jpeg" alt="Landing page của Nguyễn Quân — English Mastery" loading="lazy" />
+        </div>
+        <div style="padding:14px 18px 18px;border-top:1px solid #1a3055;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+            <p style="font-weight:800;font-size:0.9rem;color:#f0f4ff;">Nguyễn Quân</p>
+            <span style="font-size:0.65rem;font-weight:700;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#60a5fa;padding:2px 9px;border-radius:20px;">member</span>
+          </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Khóa tiếng Anh tư duy — <em style="color:#475569;">English Mastery</em></p>
+        </div>
+      </div>
+
+      <!-- Card 3: Nguyễn Diện -->
+      <div class="showcase-card" style="background:linear-gradient(135deg,#0a1628,#0c1b33);border:1px solid #1a3055;border-radius:14px;overflow:hidden;cursor:pointer;">
+        <div style="background:#0f1e38;border-bottom:1px solid #1a3055;padding:9px 14px;display:flex;align-items:center;gap:6px;">
+          <span style="width:9px;height:9px;border-radius:50%;background:#ef4444;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#fbbf24;display:inline-block;flex-shrink:0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#10b981;display:inline-block;flex-shrink:0;"></span>
+          <div style="flex:1;background:#1a3055;border-radius:4px;height:14px;margin-left:8px;"></div>
+        </div>
+        <div class="showcase-viewport" style="height:380px;overflow:hidden;">
+          <img class="showcase-img" src="Ảnh Showcase học viên/Nguyễn Diện - Chatbot Desgrow.jpeg" alt="Landing page của Nguyễn Diện — Chatbot DesGrow" loading="lazy" />
+        </div>
+        <div style="padding:14px 18px 18px;border-top:1px solid #1a3055;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+            <p style="font-weight:800;font-size:0.9rem;color:#f0f4ff;">Nguyễn Diện</p>
+            <span style="font-size:0.65rem;font-weight:700;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#60a5fa;padding:2px 9px;border-radius:20px;">member</span>
+          </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Chatbot AI tự động chốt đơn 24/7 — <em style="color:#475569;">DesGrow</em></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ══════════════════════════════════════════════
      PAIN — 3 NHÓM
